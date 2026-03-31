@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Emergent HR — Powered by Simona Fuchila</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:    #1a1a18;
+      --cream:  #f5f0e8;
+      --warm:   #e8dfd0;
+      --gold:   #b08c5a;
+      --gold-light: #d4a96a;
+      --rust:   #8b4a2f;
+      --sage:   #5a6b52;
+      --muted:  #7a7065;
+      --white:  #fdfaf5;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--white);
+      color: var(--ink);
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.4rem 4rem;
+      background: rgba(253,250,245,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(176,140,90,0.15);
+    }
+    .nav-brand {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: var(--ink);
+      text-decoration: none;
+    }
+    .nav-brand span { color: var(--gold); }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a {
+      font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--muted); text-decoration: none; transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--gold); }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      padding-top: 80px;
+      background: var(--cream);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-left {
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 6rem 4rem 6rem 6rem;
+    }
+    .hero-eyebrow {
+      font-size: 0.72rem; letter-spacing: 0.25em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 1.5rem;
+      display: flex; align-items: center; gap: 0.8rem;
+    }
+    .hero-eyebrow::before {
+      content: ''; display: block; width: 32px; height: 1px; background: var(--gold);
+    }
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3.2rem, 5vw, 5.5rem);
+      font-weight: 300;
+      line-height: 1.08;
+      color: var(--ink);
+      margin-bottom: 2rem;
+    }
+    .hero-title em { font-style: italic; color: var(--gold); }
+    .hero-sub {
+      font-size: 1rem; line-height: 1.75; color: var(--muted);
+      max-width: 420px; margin-bottom: 3rem;
+    }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 0.75rem;
+      padding: 0.95rem 2rem;
+      background: var(--ink);
+      color: var(--white);
+      font-size: 0.8rem; letter-spacing: 0.15em; text-transform: uppercase;
+      text-decoration: none; border: none; cursor: pointer;
+      transition: background 0.25s, transform 0.2s;
+    }
+    .btn-primary:hover { background: var(--gold); transform: translateY(-1px); }
+    .btn-primary svg { width: 16px; }
+
+    .hero-right {
+      position: relative;
+      background: var(--ink);
+      display: flex; align-items: flex-end; justify-content: center;
+      overflow: hidden;
+    }
+    .hero-photo-placeholder {
+      width: 100%; height: 100%;
+      background: linear-gradient(160deg, #2a2520 0%, #3d3028 50%, #1a1a18 100%);
+      display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
+      padding: 3rem;
+    }
+    .hero-photo-monogram {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%,-60%);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 9rem; font-weight: 300;
+      color: rgba(176,140,90,0.18);
+      letter-spacing: -0.05em;
+      user-select: none;
+    }
+    .hero-name-card {
+      position: relative;
+      background: rgba(176,140,90,0.12);
+      border: 1px solid rgba(176,140,90,0.3);
+      padding: 1.5rem 2rem;
+      width: 100%;
+      max-width: 340px;
+    }
+    .hero-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem; font-weight: 400;
+      color: var(--white); margin-bottom: 0.25rem;
+    }
+    .hero-title-card {
+      font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--gold-light);
+    }
+
+    /* decorative circles */
+    .deco-circle {
+      position: absolute; border-radius: 50%;
+      border: 1px solid rgba(176,140,90,0.12);
+      pointer-events: none;
+    }
+
+    /* ── STATS STRIP ── */
+    #stats {
+      background: var(--ink);
+      padding: 3.5rem 6rem;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+      border-bottom: 2px solid var(--gold);
+    }
+    .stat-item { text-align: center; }
+    .stat-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3.2rem; font-weight: 300;
+      color: var(--gold); line-height: 1;
+    }
+    .stat-label {
+      font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: rgba(253,250,245,0.5); margin-top: 0.5rem;
+    }
+
+    /* ── SECTION BASE ── */
+    section { padding: 7rem 6rem; }
+    .section-tag {
+      font-size: 0.68rem; letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 1rem;
+    }
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.4rem, 3.5vw, 3.5rem);
+      font-weight: 300; line-height: 1.15;
+      color: var(--ink); margin-bottom: 1.5rem;
+    }
+    .section-title em { font-style: italic; color: var(--gold); }
+
+    /* ── ABOUT ── */
+    #about {
+      background: var(--white);
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 6rem; align-items: start;
+      padding: 7rem 6rem;
+    }
+    .about-left {}
+    .about-bio {
+      font-size: 1.05rem; line-height: 1.9;
+      color: #3a3530; margin-top: 1.5rem;
+    }
+    .about-bio + .about-bio { margin-top: 1.2rem; }
+    .about-right {}
+    .credentials-grid {
+      display: grid; grid-template-columns: 1fr;
+      gap: 1px;
+      background: var(--warm);
+      border: 1px solid var(--warm);
+      margin-top: 2rem;
+    }
+    .credential-item {
+      background: var(--white);
+      padding: 1.1rem 1.4rem;
+      display: flex; align-items: flex-start; gap: 1rem;
+    }
+    .cred-icon {
+      width: 28px; height: 28px; min-width: 28px;
+      background: var(--cream);
+      border: 1px solid rgba(176,140,90,0.3);
+      display: flex; align-items: center; justify-content: center;
+      margin-top: 2px;
+    }
+    .cred-icon svg { width: 13px; color: var(--gold); }
+    .cred-name {
+      font-size: 0.875rem; color: var(--ink); line-height: 1.4;
+    }
+    .cred-sub {
+      font-size: 0.75rem; color: var(--muted); margin-top: 0.1rem;
+    }
+    .personal-values {
+      margin-top: 3rem;
+      padding: 2rem;
+      background: var(--cream);
+      border-left: 3px solid var(--gold);
+    }
+    .values-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem; font-style: italic;
+      color: var(--ink); margin-bottom: 0.75rem;
+    }
+    .values-text {
+      font-size: 0.9rem; line-height: 1.8; color: var(--muted);
+    }
+
+    /* ── SERVICES ── */
+    #services {
+      background: var(--cream);
+    }
+    .services-intro {
+      display: grid; grid-template-columns: 1fr 2fr;
+      gap: 4rem; margin-bottom: 4rem; align-items: end;
+    }
+    .services-desc {
+      font-size: 1rem; line-height: 1.8; color: var(--muted);
+    }
+    .services-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+    .service-card {
+      background: var(--white);
+      padding: 2.5rem 2rem;
+      border-bottom: 2px solid transparent;
+      transition: border-color 0.25s, transform 0.25s;
+      cursor: default;
+    }
+    .service-card:hover {
+      border-color: var(--gold);
+      transform: translateY(-4px);
+    }
+    .service-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.5rem; font-weight: 300;
+      color: var(--warm); line-height: 1;
+      margin-bottom: 1rem;
+    }
+    .service-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem; font-weight: 600;
+      color: var(--ink); margin-bottom: 0.75rem; line-height: 1.3;
+    }
+    .service-desc {
+      font-size: 0.85rem; line-height: 1.75; color: var(--muted);
+    }
+
+    /* ── EXPERIENCE ── */
+    #experience {
+      background: var(--ink);
+      color: var(--white);
+    }
+    #experience .section-title { color: var(--white); }
+    .exp-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 3rem; margin-top: 3rem;
+    }
+    .exp-card {
+      border-top: 1px solid rgba(176,140,90,0.25);
+      padding-top: 2rem;
+    }
+    .exp-company {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem; font-weight: 400;
+      color: var(--gold-light); margin-bottom: 0.25rem;
+    }
+    .exp-role {
+      font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase;
+      color: rgba(253,250,245,0.5); margin-bottom: 1rem;
+    }
+    .exp-desc {
+      font-size: 0.9rem; line-height: 1.8;
+      color: rgba(253,250,245,0.7);
+    }
+    .exp-highlight {
+      display: inline-block; margin-top: 1rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.05rem; font-style: italic;
+      color: var(--gold);
+    }
+
+    /* ── CONTACT ── */
+    #contact {
+      background: var(--cream);
+      text-align: center;
+    }
+    #contact .section-title { margin: 0 auto 1rem; max-width: 600px; }
+    .contact-sub {
+      font-size: 1rem; color: var(--muted); margin-bottom: 3rem;
+    }
+    .contact-cards {
+      display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap;
+    }
+    .contact-card {
+      background: var(--white);
+      padding: 2rem 2.5rem;
+      min-width: 200px;
+      border: 1px solid var(--warm);
+      transition: border-color 0.2s;
+    }
+    .contact-card:hover { border-color: var(--gold); }
+    .contact-card-label {
+      font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 0.5rem;
+    }
+    .contact-card-value {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.15rem; color: var(--ink);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--ink);
+      padding: 2rem 6rem;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .footer-brand {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem; color: rgba(253,250,245,0.4);
+    }
+    .footer-brand span { color: var(--gold); }
+    .footer-copy {
+      font-size: 0.72rem; color: rgba(253,250,245,0.3);
+    }
+
+    /* ── ANIMATIONS ── */
+    .fade-up {
+      opacity: 0; transform: translateY(28px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .fade-up.visible { opacity: 1; transform: none; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 960px) {
+      nav { padding: 1.2rem 2rem; }
+      .nav-links { gap: 1.5rem; }
+      #hero { grid-template-columns: 1fr; min-height: auto; }
+      .hero-left { padding: 5rem 2rem 3rem; }
+      .hero-right { min-height: 50vh; }
+      #stats { grid-template-columns: repeat(2,1fr); padding: 3rem 2rem; }
+      section, #about, #services, #experience, #contact { padding: 5rem 2rem; }
+      #about { grid-template-columns: 1fr; gap: 3rem; }
+      .services-intro { grid-template-columns: 1fr; gap: 1.5rem; }
+      .services-grid { grid-template-columns: 1fr 1fr; }
+      .exp-grid { grid-template-columns: 1fr; }
+      footer { flex-direction: column; gap: 0.5rem; text-align: center; padding: 2rem; }
+    }
+    @media (max-width: 600px) {
+      .services-grid { grid-template-columns: 1fr; }
+      #stats { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-brand" href="#hero">Emergent <span>HR</span></a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-left">
+    <div class="hero-eyebrow">Emergent HR</div>
+    <h1 class="hero-title">
+      Human Resources<br/>
+      that <em>transforms</em><br/>
+      organizations.
+    </h1>
+    <p class="hero-sub">
+      Strategic HR leadership with over 25 years of international experience — from start-up to enterprise, across Romania, the UK, and Europe.
+    </p>
+    <a href="#contact" class="btn-primary">
+      Work with Simona
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+  <div class="hero-right">
+    <div class="hero-photo-placeholder">
+      <div class="hero-photo-monogram">SF</div>
+      <div class="deco-circle" style="width:300px;height:300px;top:10%;left:10%;"></div>
+      <div class="deco-circle" style="width:180px;height:180px;bottom:20%;right:5%;"></div>
+      <div class="hero-name-card">
+        <div class="hero-name">Simona Fuchila</div>
+        <div class="hero-title-card">HR Director &amp; Executive Coach</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS STRIP -->
+<div id="stats">
+  <div class="stat-item fade-up">
+    <div class="stat-num">25+</div>
+    <div class="stat-label">Years of Experience</div>
+  </div>
+  <div class="stat-item fade-up" style="transition-delay:0.1s">
+    <div class="stat-num">3,500</div>
+    <div class="stat-label">Employees Scaled To</div>
+  </div>
+  <div class="stat-item fade-up" style="transition-delay:0.2s">
+    <div class="stat-num">3</div>
+    <div class="stat-label">Countries & Markets</div>
+  </div>
+  <div class="stat-item fade-up" style="transition-delay:0.3s">
+    <div class="stat-num">10+</div>
+    <div class="stat-label">Certifications</div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-left fade-up">
+    <p class="section-tag">About Simona</p>
+    <h2 class="section-title">A career built on <em>people</em> &amp; purpose.</h2>
+    <p class="about-bio">
+      Simona Fuchila is a highly influential and transformative Human Resources Leader with over 25 years of experience. She has a remarkable track record of developing and executing HR strategies that drive organizational growth, profitability, and employee engagement — successfully guiding organizations from a single employee to 3,500.
+    </p>
+    <p class="about-bio">
+      Her expertise spans comprehensive change management, Lean and Six Sigma process optimization, talent development, and designing salary structures compliant with European equal pay directives. With experience across Romania, the UK, and Europe, Simona is an invaluable partner to any company aiming to elevate their HR capabilities.
+    </p>
+    <p class="about-bio">
+      On a personal level, Simona is driven by a deep belief that engaged, empowered people are the true engine of any organization. Throughout her career she has realized that lasting transformation begins not with processes — but with trust, values, and genuine human connection.
+    </p>
+    <div class="personal-values">
+      <div class="values-title">"While working across cultures and industries, I realized that the most resilient organizations share one thing: people who feel seen."</div>
+      <div class="values-text">Simona brings this philosophy to every engagement — combining rigorous methodology with empathy, and strategy with heart.</div>
+    </div>
+  </div>
+  <div class="about-right fade-up" style="transition-delay:0.15s">
+    <p class="section-tag">Credentials &amp; Education</p>
+    <h3 class="section-title" style="font-size:1.8rem">Certified. <em>Proven.</em></h3>
+    <div class="credentials-grid">
+      <div class="credential-item">
+        <div class="cred-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3.33 1.67 8.67 1.67 12 0v-5"/></svg>
+        </div>
+        <div>
+          <div class="cred-name">Executive MBA</div>
+          <div class="cred-sub">Hull University, UK</div>
+        </div>
+      </div>
+      <div class="credential-item">
+        <div class="cred-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        </div>
+        <div>
+          <div class="cred-name">MBTI Step I &amp; II</div>
+          <div class="cred-sub">Certified Practitioner</div>
+        </div>
+      </div>
+      <div class="credential-item">
+        <div class="cred-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+        <div>
+          <div class="cred-name">Korn Ferry Leadership Architect</div>
+          <div class="cred-sub">360° &amp; Emotional Intelligence (ESCI)</div>
+        </div>
+      </div>
+      <div class="credential-item">
+        <div class="cred-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/></svg>
+        </div>
+        <div>
+          <div class="cred-name">Organizational Culture Diagnosis</div>
+          <div class="cred-sub">Hofstede Insights — The Culture Factor</div>
+        </div>
+      </div>
+      <div class="credential-item">
+        <div class="cred-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </div>
+        <div>
+          <div class="cred-name">DISC &amp; LEAN Manufacturing</div>
+          <div class="cred-sub">Applied in HR Operations</div>
+        </div>
+      </div>
+      <div class="credential-item">
+        <div class="cred-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        </div>
+        <div>
+          <div class="cred-name">Executive &amp; Career Coach</div>
+          <div class="cred-sub">Certified Practitioner</div>
+        </div>
+      </div>
+      <div class="credential-item">
+        <div class="cred-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        </div>
+        <div>
+          <div class="cred-name">Behavioural Economics</div>
+          <div class="cred-sub">Buckingham University</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="services-intro fade-up">
+    <div>
+      <p class="section-tag">What I Do</p>
+      <h2 class="section-title">Strategic <em>interventions</em> that last.</h2>
+    </div>
+    <p class="services-desc">
+      Emergent HR offers a full spectrum of strategic HR services — tailored to each organization's unique needs, culture, and ambitions. Whether you're scaling rapidly or navigating complex transformation, Simona brings the expertise to guide you forward.
+    </p>
+  </div>
+  <div class="services-grid">
+    <div class="service-card fade-up">
+      <div class="service-num">01</div>
+      <div class="service-name">Organizational Design &amp; Structure</div>
+      <p class="service-desc">Design and optimization of organizational structures, ensuring the right talent is aligned with the right roles for maximum impact.</p>
+    </div>
+    <div class="service-card fade-up" style="transition-delay:0.08s">
+      <div class="service-num">02</div>
+      <div class="service-name">Change Management &amp; Culture</div>
+      <p class="service-desc">Facilitating organizational cohesion and driving maturity — creating an environment of collaboration, growth, and lasting cultural change.</p>
+    </div>
+    <div class="service-card fade-up" style="transition-delay:0.16s">
+      <div class="service-num">03</div>
+      <div class="service-name">Equal Pay &amp; Compensation</div>
+      <p class="service-desc">Developing salary structures that comply with European equal pay directives, ensuring fairness and equity across genders and roles.</p>
+    </div>
+    <div class="service-card fade-up" style="transition-delay:0.24s">
+      <div class="service-num">04</div>
+      <div class="service-name">HR Process Optimization</div>
+      <p class="service-desc">Streamlining HR processes through Lean principles — enhancing efficiency, reducing waste, and building scalable operations.</p>
+    </div>
+    <div class="service-card fade-up" style="transition-delay:0.32s">
+      <div class="service-num">05</div>
+      <div class="service-name">HR Strategy &amp; Consultancy</div>
+      <p class="service-desc">Crafting and executing HR strategies aligned with business goals — and providing expert consultancy tailored to your organization's unique needs.</p>
+    </div>
+    <div class="service-card fade-up" style="transition-delay:0.4s">
+      <div class="service-num">06</div>
+      <div class="service-name">Executive &amp; Career Coaching</div>
+      <p class="service-desc">Delivering one-on-one coaching to leaders and professionals — empowering them to reach their full potential and navigate pivotal transitions.</p>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <p class="section-tag">Career Highlights</p>
+  <h2 class="section-title">A proven track record <em>across industries.</em></h2>
+  <div class="exp-grid">
+    <div class="exp-card fade-up">
+      <div class="exp-company">Emerson</div>
+      <div class="exp-role">HR Director · 17 Years</div>
+      <p class="exp-desc">Led HR from the ground up, scaling the organization from 0 to 3,500 employees. Designed and implemented end-to-end HR strategies covering talent acquisition, performance management, culture, compensation, and organizational development across multiple European sites.</p>
+      <span class="exp-highlight">0 → 3,500 employees</span>
+    </div>
+    <div class="exp-card fade-up" style="transition-delay:0.1s">
+      <div class="exp-company">Automotive Industry</div>
+      <div class="exp-role">Sumitomo &amp; Faurecia · 6 Years</div>
+      <p class="exp-desc">Held progressive roles as trainer, HR coordinator, and LEAN specialist in HR — applying Six Sigma and Lean methodologies to streamline workforce processes, reduce inefficiencies, and build high-performing teams within fast-paced manufacturing environments.</p>
+      <span class="exp-highlight">Lean · Six Sigma · HR Operations</span>
+    </div>
+    <div class="exp-card fade-up" style="transition-delay:0.2s">
+      <div class="exp-company">International Reach</div>
+      <div class="exp-role">Romania · UK · Europe</div>
+      <p class="exp-desc">Deep experience working across cultures — bridging Eastern European operational contexts with Western corporate frameworks. Brings a uniquely cross-cultural perspective to every engagement, navigating complexity with empathy and precision.</p>
+      <span class="exp-highlight">Cross-cultural HR leadership</span>
+    </div>
+    <div class="exp-card fade-up" style="transition-delay:0.3s">
+      <div class="exp-company">Emergent HR</div>
+      <div class="exp-role">Independent Consultancy · Present</div>
+      <p class="exp-desc">Now working independently with organizations across sectors to deliver strategic HR transformation. Combining decades of corporate expertise with the agility and personalized attention of a boutique consultancy — powered by deep human understanding.</p>
+      <span class="exp-highlight">Available for new partnerships</span>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <p class="section-tag">Let's Talk</p>
+  <h2 class="section-title">Ready to <em>elevate</em> your HR?</h2>
+  <p class="contact-sub">Whether you're scaling your team, navigating change, or looking for a strategic HR partner — Simona is ready to help.</p>
+  <div class="contact-cards">
+    <div class="contact-card fade-up">
+      <div class="contact-card-label">Connect on</div>
+      <div class="contact-card-value">LinkedIn</div>
+    </div>
+    <div class="contact-card fade-up" style="transition-delay:0.1s">
+      <div class="contact-card-label">Location</div>
+      <div class="contact-card-value">Romania &amp; Europe</div>
+    </div>
+    <div class="contact-card fade-up" style="transition-delay:0.2s">
+      <div class="contact-card-label">Availability</div>
+      <div class="contact-card-value">Open to Projects</div>
+    </div>
+  </div>
+  <div style="margin-top:3rem" class="fade-up">
+    <a href="mailto:simona@emergenthr.com" class="btn-primary">Get in Touch →</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">Emergent <span>HR</span> · Powered by Simona Fuchila</div>
+  <div class="footer-copy">© 2025 Emergent HR. All rights reserved.</div>
+</footer>
+
+<script>
+  // Intersection Observer for fade-up animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
