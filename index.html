@@ -339,6 +339,124 @@
       font-size: 1.15rem; color: var(--ink);
     }
 
+    /* ── BLOG ── */
+    #blog {
+      background: var(--white);
+    }
+    .blog-header {
+      display: flex; align-items: flex-end; justify-content: space-between;
+      margin-bottom: 3rem; flex-wrap: wrap; gap: 1.5rem;
+    }
+    .blog-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+    .blog-card {
+      border: 1px solid var(--warm);
+      background: var(--white);
+      display: flex; flex-direction: column;
+      transition: border-color 0.25s, transform 0.25s;
+    }
+    .blog-card:hover { border-color: var(--gold); transform: translateY(-4px); }
+    .blog-card-top {
+      background: var(--cream);
+      padding: 2rem 2rem 1.5rem;
+      border-bottom: 1px solid var(--warm);
+    }
+    .blog-cat {
+      font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 0.75rem;
+    }
+    .blog-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem; font-weight: 600;
+      color: var(--ink); line-height: 1.3;
+    }
+    .blog-card-body {
+      padding: 1.5rem 2rem 2rem;
+      flex: 1; display: flex; flex-direction: column;
+    }
+    .blog-excerpt {
+      font-size: 0.875rem; line-height: 1.8;
+      color: var(--muted); flex: 1; margin-bottom: 1.5rem;
+    }
+    .blog-meta {
+      display: flex; align-items: center; justify-content: space-between;
+      font-size: 0.72rem; color: var(--muted);
+      border-top: 1px solid var(--warm); padding-top: 1rem;
+    }
+    .blog-date { letter-spacing: 0.05em; }
+    .blog-read {
+      font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--gold); text-decoration: none;
+      display: flex; align-items: center; gap: 0.4rem;
+      transition: gap 0.2s;
+    }
+    .blog-read:hover { gap: 0.7rem; }
+    .blog-featured {
+      grid-column: span 3;
+      display: grid; grid-template-columns: 1fr 1fr;
+      border: 1px solid var(--warm);
+      background: var(--ink);
+      transition: border-color 0.25s;
+    }
+    .blog-featured:hover { border-color: var(--gold); }
+    .blog-featured-left {
+      padding: 3.5rem;
+      display: flex; flex-direction: column; justify-content: space-between;
+    }
+    .blog-featured-tag {
+      font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 1rem;
+      display: flex; align-items: center; gap: 0.6rem;
+    }
+    .blog-featured-tag::before {
+      content: 'Featured';
+      background: var(--gold);
+      color: var(--ink);
+      padding: 0.15rem 0.5rem;
+      font-weight: 500;
+    }
+    .blog-featured-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem; font-weight: 400; font-style: italic;
+      color: var(--white); line-height: 1.25;
+      margin-bottom: 1.5rem;
+    }
+    .blog-featured-excerpt {
+      font-size: 0.9rem; line-height: 1.85;
+      color: rgba(253,250,245,0.65); margin-bottom: 2rem; flex: 1;
+    }
+    .blog-featured-meta {
+      font-size: 0.72rem; color: rgba(253,250,245,0.35);
+      letter-spacing: 0.08em;
+    }
+    .blog-featured-right {
+      background: linear-gradient(135deg, #2a2520 0%, #3d3028 100%);
+      display: flex; align-items: center; justify-content: center;
+      min-height: 280px; position: relative; overflow: hidden;
+    }
+    .blog-featured-monogram {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 12rem; font-weight: 300;
+      color: rgba(176,140,90,0.1);
+      user-select: none; line-height: 1;
+    }
+    .blog-featured-label {
+      position: absolute; bottom: 2rem; right: 2rem;
+      font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: rgba(176,140,90,0.5);
+    }
+    @media (max-width: 960px) {
+      .blog-grid { grid-template-columns: 1fr 1fr; }
+      .blog-featured { grid-column: span 2; grid-template-columns: 1fr; }
+      .blog-featured-right { min-height: 180px; }
+    }
+    @media (max-width: 600px) {
+      .blog-grid { grid-template-columns: 1fr; }
+      .blog-featured { grid-column: span 1; }
+    }
+
     /* ── FOOTER ── */
     footer {
       background: var(--ink);
@@ -391,6 +509,7 @@
     <li><a href="#about">About</a></li>
     <li><a href="#services">Services</a></li>
     <li><a href="#experience">Experience</a></li>
+    <li><a href="#blog">Blog</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
 </nav>
@@ -413,14 +532,10 @@
     </a>
   </div>
   <div class="hero-right">
-    <div class="hero-photo-placeholder">
-      <div class="hero-photo-monogram">SF</div>
-      <div class="deco-circle" style="width:300px;height:300px;top:10%;left:10%;"></div>
-      <div class="deco-circle" style="width:180px;height:180px;bottom:20%;right:5%;"></div>
-      <div class="hero-name-card">
-        <div class="hero-name">Simona Fuchila</div>
-        <div class="hero-title-card">HR Director &amp; Executive Coach</div>
-      </div>
+    <img src="simona.png" alt="Simona Fuchila" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;" />
+    <div class="hero-name-card" style="position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);width:calc(100% - 4rem);max-width:340px;">
+      <div class="hero-name">Simona Fuchila</div>
+      <div class="hero-title-card">HR Director &amp; Executive Coach</div>
     </div>
   </div>
 </section>
@@ -612,6 +727,84 @@
   </div>
 </section>
 
+<!-- BLOG -->
+<section id="blog">
+  <div class="blog-header fade-up">
+    <div>
+      <p class="section-tag">Insights &amp; Ideas</p>
+      <h2 class="section-title">From the <em>blog.</em></h2>
+    </div>
+    <p class="service-desc">Simona shares perspectives on HR transformation, leadership, and the evolving world of work.</p>
+  </div>
+  <div class="blog-grid">
+
+    <!-- Featured post -->
+    <div class="blog-featured fade-up">
+      <div class="blog-featured-left">
+        <div>
+          <div class="blog-featured-tag">Leadership</div>
+          <div class="blog-featured-title">Why Organizational Culture Is the Most Underestimated Strategic Asset</div>
+          <p class="blog-featured-excerpt">Most organizations treat culture as a soft topic — something HR handles on the side. In my 25 years of experience, I've seen that the opposite is true: culture is the operating system everything else runs on. When it's misaligned, even the best strategy fails quietly.</p>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <div class="blog-featured-meta">February 2025 · 6 min read</div>
+          <a href="#" class="blog-read" style="color:var(--gold-light);">Read more →</a>
+        </div>
+      </div>
+      <div class="blog-featured-right">
+        <div class="blog-featured-monogram">HR</div>
+        <div class="blog-featured-label">Featured Post</div>
+      </div>
+    </div>
+
+    <!-- Post 1 -->
+    <div class="blog-card fade-up" style="transition-delay:0.08s">
+      <div class="blog-card-top">
+        <div class="blog-cat">Change Management</div>
+        <div class="blog-title">Navigating Organizational Change Without Losing Your Best People</div>
+      </div>
+      <div class="blog-card-body">
+        <p class="blog-excerpt">Change initiatives fail not because of poor planning, but because of poor communication. Here's a framework I've used across multinational organizations to keep talent engaged through uncertainty.</p>
+        <div class="blog-meta">
+          <span class="blog-date">January 2025</span>
+          <a href="#" class="blog-read">Read more →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Post 2 -->
+    <div class="blog-card fade-up" style="transition-delay:0.16s">
+      <div class="blog-card-top">
+        <div class="blog-cat">Equal Pay</div>
+        <div class="blog-title">The EU Pay Transparency Directive: What Every HR Leader Needs to Know</div>
+      </div>
+      <div class="blog-card-body">
+        <p class="blog-excerpt">The EU's new directive is more than a compliance challenge — it's an opportunity to build genuinely equitable compensation structures. Here's how to prepare your organization before the deadline.</p>
+        <div class="blog-meta">
+          <span class="blog-date">December 2024</span>
+          <a href="#" class="blog-read">Read more →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Post 3 -->
+    <div class="blog-card fade-up" style="transition-delay:0.24s">
+      <div class="blog-card-top">
+        <div class="blog-cat">Lean HR</div>
+        <div class="blog-title">Applying Lean Principles to HR: Less Process, More Impact</div>
+      </div>
+      <div class="blog-card-body">
+        <p class="blog-excerpt">HR teams often build complexity over time — layers of approval, redundant forms, slow workflows. Lean thinking helped me cut through the noise and focus every process on the value it creates for people and the business.</p>
+        <div class="blog-meta">
+          <span class="blog-date">November 2024</span>
+          <a href="#" class="blog-read">Read more →</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
 <!-- CONTACT -->
 <section id="contact">
   <p class="section-tag">Let's Talk</p>
@@ -632,14 +825,14 @@
     </div>
   </div>
   <div style="margin-top:3rem" class="fade-up">
-    <a href="mailto:simona@emergenthr.ro" class="btn-primary">Get in Touch →</a>
+    <a href="mailto:simona@emergenthr.com" class="btn-primary">Get in Touch →</a>
   </div>
 </section>
 
 <!-- FOOTER -->
 <footer>
   <div class="footer-brand">Emergent <span>HR</span> · Powered by Simona Fuchila</div>
-  <div class="footer-copy">© 2026 Emergent HR. All rights reserved.</div>
+  <div class="footer-copy">© 2025 Emergent HR. All rights reserved.</div>
 </footer>
 
 <script>
