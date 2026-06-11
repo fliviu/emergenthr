@@ -29,6 +29,40 @@
       overflow-x: hidden;
     }
 
+    /* ── LANG TOGGLE ── */
+    .lang-toggle {
+      display: flex; align-items: center; gap: 0.25rem;
+      background: var(--cream); border: 1px solid var(--warm);
+      border-radius: 2px; overflow: hidden; flex-shrink: 0;
+    }
+    .lang-btn {
+      padding: 0.35rem 0.65rem;
+      font-size: 0.7rem; font-weight: 500; letter-spacing: 0.12em;
+      text-transform: uppercase; cursor: pointer; border: none;
+      background: transparent; color: var(--muted);
+      transition: background 0.2s, color 0.2s;
+    }
+    .lang-btn.active { background: var(--ink); color: var(--white); }
+    .lang-btn:hover:not(.active) { background: var(--warm); color: var(--ink); }
+
+    /* i18n: hide/show by lang */
+    [data-lang] { display: none; }
+    body.lang-en [data-lang="en"], body.lang-ro [data-lang="ro"] { display: contents; }
+    p[data-lang], div[data-lang], span[data-lang], li[data-lang],
+    h1[data-lang], h2[data-lang], h3[data-lang] { display: none; }
+    body.lang-en p[data-lang="en"], body.lang-en div[data-lang="en"],
+    body.lang-en span[data-lang="en"], body.lang-en h1[data-lang="en"],
+    body.lang-en h2[data-lang="en"], body.lang-en h3[data-lang="en"] { display: block; }
+    body.lang-ro p[data-lang="ro"], body.lang-ro div[data-lang="ro"],
+    body.lang-ro span[data-lang="ro"], body.lang-ro h1[data-lang="ro"],
+    body.lang-ro h2[data-lang="ro"], body.lang-ro h3[data-lang="ro"] { display: block; }
+    body.lang-en span[data-lang="en"] { display: inline; }
+    body.lang-ro span[data-lang="ro"] { display: inline; }
+    body.lang-en .hero-eyebrow[data-lang="en"],
+    body.lang-ro .hero-eyebrow[data-lang="ro"] { display: flex; }
+    body.lang-en li[data-lang="en"], body.lang-ro li[data-lang="ro"] { display: list-item; }
+    body.lang-en .stat-label[data-lang="en"], body.lang-ro .stat-label[data-lang="ro"] { display: block; }
+
     /* ── NAV ── */
     nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
@@ -47,6 +81,7 @@
       text-decoration: none;
     }
     .nav-brand span { color: var(--gold); }
+    .nav-right { display: flex; align-items: center; gap: 2.5rem; }
     .nav-links { display: flex; gap: 2.5rem; list-style: none; }
     .nav-links a {
       font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase;
@@ -100,34 +135,18 @@
     }
     .btn-primary:hover { background: var(--gold); transform: translateY(-1px); }
     .btn-primary svg { width: 16px; }
-
     .hero-right {
       position: relative;
       background: var(--ink);
       display: flex; align-items: flex-end; justify-content: center;
       overflow: hidden;
     }
-    .hero-photo-placeholder {
-      width: 100%; height: 100%;
-      background: linear-gradient(160deg, #2a2520 0%, #3d3028 50%, #1a1a18 100%);
-      display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
-      padding: 3rem;
-    }
-    .hero-photo-monogram {
-      position: absolute; top: 50%; left: 50%; transform: translate(-50%,-60%);
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 9rem; font-weight: 300;
-      color: rgba(176,140,90,0.18);
-      letter-spacing: -0.05em;
-      user-select: none;
-    }
     .hero-name-card {
-      position: relative;
+      position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+      width: calc(100% - 4rem); max-width: 340px;
       background: rgba(176,140,90,0.12);
       border: 1px solid rgba(176,140,90,0.3);
       padding: 1.5rem 2rem;
-      width: 100%;
-      max-width: 340px;
     }
     .hero-name {
       font-family: 'Cormorant Garamond', serif;
@@ -137,13 +156,6 @@
     .hero-title-card {
       font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase;
       color: var(--gold-light);
-    }
-
-    /* decorative circles */
-    .deco-circle {
-      position: absolute; border-radius: 50%;
-      border: 1px solid rgba(176,140,90,0.12);
-      pointer-events: none;
     }
 
     /* ── STATS STRIP ── */
@@ -188,106 +200,66 @@
       padding: 7rem 6rem;
     }
     .about-bio {
-      font-size: 1.05rem; line-height: 1.9;
-      color: #3a3530; margin-top: 1.5rem;
+      font-size: 1.05rem; line-height: 1.9; color: #3a3530; margin-top: 1.5rem;
     }
-    .about-bio + .about-bio { margin-top: 1.2rem; }
     .credentials-grid {
-      display: grid; grid-template-columns: 1fr;
-      gap: 1px;
-      background: var(--warm);
-      border: 1px solid var(--warm);
-      margin-top: 2rem;
+      display: grid; gap: 1px;
+      background: var(--warm); border: 1px solid var(--warm); margin-top: 2rem;
     }
     .credential-item {
-      background: var(--white);
-      padding: 1.1rem 1.4rem;
+      background: var(--white); padding: 1.1rem 1.4rem;
       display: flex; align-items: flex-start; gap: 1rem;
     }
     .cred-icon {
       width: 28px; height: 28px; min-width: 28px;
-      background: var(--cream);
-      border: 1px solid rgba(176,140,90,0.3);
-      display: flex; align-items: center; justify-content: center;
-      margin-top: 2px;
+      background: var(--cream); border: 1px solid rgba(176,140,90,0.3);
+      display: flex; align-items: center; justify-content: center; margin-top: 2px;
     }
     .cred-icon svg { width: 13px; color: var(--gold); }
-    .cred-name {
-      font-size: 0.875rem; color: var(--ink); line-height: 1.4;
-    }
-    .cred-sub {
-      font-size: 0.75rem; color: var(--muted); margin-top: 0.1rem;
-    }
+    .cred-name { font-size: 0.875rem; color: var(--ink); line-height: 1.4; }
+    .cred-sub { font-size: 0.75rem; color: var(--muted); margin-top: 0.1rem; }
     .personal-values {
-      margin-top: 3rem;
-      padding: 2rem;
-      background: var(--cream);
-      border-left: 3px solid var(--gold);
+      margin-top: 3rem; padding: 2rem;
+      background: var(--cream); border-left: 3px solid var(--gold);
     }
     .values-title {
       font-family: 'Cormorant Garamond', serif;
       font-size: 1.2rem; font-style: italic;
       color: var(--ink); margin-bottom: 0.75rem;
     }
-    .values-text {
-      font-size: 0.9rem; line-height: 1.8; color: var(--muted);
-    }
+    .values-text { font-size: 0.9rem; line-height: 1.8; color: var(--muted); }
 
     /* ── SERVICES ── */
-    #services {
-      background: var(--cream);
-    }
+    #services { background: var(--cream); }
     .services-intro {
       display: grid; grid-template-columns: 1fr 2fr;
       gap: 4rem; margin-bottom: 4rem; align-items: end;
     }
-    .services-desc {
-      font-size: 1rem; line-height: 1.8; color: var(--muted);
-    }
-    .services-grid {
-      display: grid; grid-template-columns: repeat(3, 1fr);
-      gap: 1.5rem;
-    }
+    .services-desc { font-size: 1rem; line-height: 1.8; color: var(--muted); }
+    .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
     .service-card {
-      background: var(--white);
-      padding: 2.5rem 2rem;
+      background: var(--white); padding: 2.5rem 2rem;
       border-bottom: 2px solid transparent;
       transition: border-color 0.25s, transform 0.25s;
-      cursor: default;
     }
-    .service-card:hover {
-      border-color: var(--gold);
-      transform: translateY(-4px);
-    }
+    .service-card:hover { border-color: var(--gold); transform: translateY(-4px); }
     .service-num {
       font-family: 'Cormorant Garamond', serif;
       font-size: 2.5rem; font-weight: 300;
-      color: var(--warm); line-height: 1;
-      margin-bottom: 1rem;
+      color: var(--warm); line-height: 1; margin-bottom: 1rem;
     }
     .service-name {
       font-family: 'Cormorant Garamond', serif;
       font-size: 1.25rem; font-weight: 600;
       color: var(--ink); margin-bottom: 0.75rem; line-height: 1.3;
     }
-    .service-desc {
-      font-size: 0.85rem; line-height: 1.75; color: var(--muted);
-    }
+    .service-desc { font-size: 0.85rem; line-height: 1.75; color: var(--muted); }
 
     /* ── EXPERIENCE ── */
-    #experience {
-      background: var(--ink);
-      color: var(--white);
-    }
+    #experience { background: var(--ink); color: var(--white); }
     #experience .section-title { color: var(--white); }
-    .exp-grid {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 3rem; margin-top: 3rem;
-    }
-    .exp-card {
-      border-top: 1px solid rgba(176,140,90,0.25);
-      padding-top: 2rem;
-    }
+    .exp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; margin-top: 3rem; }
+    .exp-card { border-top: 1px solid rgba(176,140,90,0.25); padding-top: 2rem; }
     .exp-company {
       font-family: 'Cormorant Garamond', serif;
       font-size: 1.5rem; font-weight: 400;
@@ -297,68 +269,28 @@
       font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase;
       color: rgba(253,250,245,0.5); margin-bottom: 1rem;
     }
-    .exp-desc {
-      font-size: 0.9rem; line-height: 1.8;
-      color: rgba(253,250,245,0.7);
-    }
+    .exp-desc { font-size: 0.9rem; line-height: 1.8; color: rgba(253,250,245,0.7); }
     .exp-highlight {
       display: inline-block; margin-top: 1rem;
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1.05rem; font-style: italic;
-      color: var(--gold);
-    }
-
-    /* ── CONTACT ── */
-    #contact {
-      background: var(--cream);
-      text-align: center;
-    }
-    #contact .section-title { margin: 0 auto 1rem; max-width: 600px; }
-    .contact-sub {
-      font-size: 1rem; color: var(--muted); margin-bottom: 3rem;
-    }
-    .contact-cards {
-      display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap;
-    }
-    .contact-card {
-      background: var(--white);
-      padding: 2rem 2.5rem;
-      min-width: 200px;
-      border: 1px solid var(--warm);
-      transition: border-color 0.2s;
-    }
-    .contact-card:hover { border-color: var(--gold); }
-    .contact-card-label {
-      font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase;
-      color: var(--gold); margin-bottom: 0.5rem;
-    }
-    .contact-card-value {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.15rem; color: var(--ink);
+      font-size: 1.05rem; font-style: italic; color: var(--gold);
     }
 
     /* ── BLOG ── */
-    #blog {
-      background: var(--white);
-    }
+    #blog { background: var(--white); }
     .blog-header {
       display: flex; align-items: flex-end; justify-content: space-between;
       margin-bottom: 3rem; flex-wrap: wrap; gap: 1.5rem;
     }
-    .blog-grid {
-      display: grid; grid-template-columns: repeat(3, 1fr);
-      gap: 2rem;
-    }
+    .blog-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
     .blog-card {
-      border: 1px solid var(--warm);
-      background: var(--white);
+      border: 1px solid var(--warm); background: var(--white);
       display: flex; flex-direction: column;
       transition: border-color 0.25s, transform 0.25s;
     }
     .blog-card:hover { border-color: var(--gold); transform: translateY(-4px); }
     .blog-card-top {
-      background: var(--cream);
-      padding: 2rem 2rem 1.5rem;
+      background: var(--cream); padding: 2rem 2rem 1.5rem;
       border-bottom: 1px solid var(--warm);
     }
     .blog-cat {
@@ -367,17 +299,10 @@
     }
     .blog-title {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1.3rem; font-weight: 600;
-      color: var(--ink); line-height: 1.3;
+      font-size: 1.3rem; font-weight: 600; color: var(--ink); line-height: 1.3;
     }
-    .blog-card-body {
-      padding: 1.5rem 2rem 2rem;
-      flex: 1; display: flex; flex-direction: column;
-    }
-    .blog-excerpt {
-      font-size: 0.875rem; line-height: 1.8;
-      color: var(--muted); flex: 1; margin-bottom: 1.5rem;
-    }
+    .blog-card-body { padding: 1.5rem 2rem 2rem; flex: 1; display: flex; flex-direction: column; }
+    .blog-excerpt { font-size: 0.875rem; line-height: 1.8; color: var(--muted); flex: 1; margin-bottom: 1.5rem; }
     .blog-meta {
       display: flex; align-items: center; justify-content: space-between;
       font-size: 0.72rem; color: var(--muted);
@@ -387,48 +312,34 @@
     .blog-read {
       font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase;
       color: var(--gold); text-decoration: none;
-      display: flex; align-items: center; gap: 0.4rem;
-      transition: gap 0.2s;
+      display: flex; align-items: center; gap: 0.4rem; transition: gap 0.2s;
     }
     .blog-read:hover { gap: 0.7rem; }
     .blog-featured {
-      grid-column: span 3;
-      display: grid; grid-template-columns: 1fr 1fr;
-      border: 1px solid var(--warm);
-      background: var(--ink);
-      transition: border-color 0.25s;
+      grid-column: span 3; display: grid; grid-template-columns: 1fr 1fr;
+      border: 1px solid var(--warm); background: var(--ink); transition: border-color 0.25s;
     }
     .blog-featured:hover { border-color: var(--gold); }
-    .blog-featured-left {
-      padding: 3.5rem;
-      display: flex; flex-direction: column; justify-content: space-between;
-    }
+    .blog-featured-left { padding: 3.5rem; display: flex; flex-direction: column; justify-content: space-between; }
     .blog-featured-tag {
       font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase;
-      color: var(--gold); margin-bottom: 1rem;
-      display: flex; align-items: center; gap: 0.6rem;
+      color: var(--gold); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.6rem;
     }
     .blog-featured-tag::before {
-      content: 'Featured';
-      background: var(--gold);
-      color: var(--ink);
-      padding: 0.15rem 0.5rem;
-      font-weight: 500;
+      content: 'Featured'; background: var(--gold); color: var(--ink);
+      padding: 0.15rem 0.5rem; font-weight: 500;
     }
+    body.lang-ro .blog-featured-tag::before { content: 'Articol Principal'; }
     .blog-featured-title {
       font-family: 'Cormorant Garamond', serif;
       font-size: 2rem; font-weight: 400; font-style: italic;
-      color: var(--white); line-height: 1.25;
-      margin-bottom: 1.5rem;
+      color: var(--white); line-height: 1.25; margin-bottom: 1.5rem;
     }
     .blog-featured-excerpt {
-      font-size: 0.9rem; line-height: 1.85;
-      color: rgba(253,250,245,0.65); margin-bottom: 2rem; flex: 1;
+      font-size: 0.9rem; line-height: 1.85; color: rgba(253,250,245,0.65);
+      margin-bottom: 2rem; flex: 1;
     }
-    .blog-featured-meta {
-      font-size: 0.72rem; color: rgba(253,250,245,0.35);
-      letter-spacing: 0.08em;
-    }
+    .blog-featured-meta { font-size: 0.72rem; color: rgba(253,250,245,0.35); letter-spacing: 0.08em; }
     .blog-featured-right {
       background: linear-gradient(135deg, #2a2520 0%, #3d3028 100%);
       display: flex; align-items: center; justify-content: center;
@@ -436,8 +347,7 @@
     }
     .blog-featured-monogram {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 12rem; font-weight: 300;
-      color: rgba(176,140,90,0.1);
+      font-size: 12rem; font-weight: 300; color: rgba(176,140,90,0.1);
       user-select: none; line-height: 1;
     }
     .blog-featured-label {
@@ -445,36 +355,83 @@
       font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase;
       color: rgba(176,140,90,0.5);
     }
-    @media (max-width: 960px) {
-      .blog-grid { grid-template-columns: 1fr 1fr; }
-      .blog-featured { grid-column: span 2; grid-template-columns: 1fr; }
-      .blog-featured-right { min-height: 180px; }
+
+    /* ── BLOG POST OVERLAY ── */
+    .blog-overlay {
+      display: none; position: fixed; inset: 0; z-index: 200;
+      background: rgba(26,26,24,0.7); backdrop-filter: blur(6px);
+      align-items: center; justify-content: center; padding: 2rem;
     }
-    @media (max-width: 600px) {
-      .blog-grid { grid-template-columns: 1fr; }
-      .blog-featured { grid-column: span 1; }
+    .blog-overlay.open { display: flex; }
+    .blog-post-modal {
+      background: var(--white); max-width: 720px; width: 100%;
+      max-height: 90vh; overflow-y: auto; padding: 3.5rem; position: relative;
     }
+    .blog-post-close {
+      position: absolute; top: 1.5rem; right: 1.5rem;
+      background: none; border: none; cursor: pointer;
+      font-size: 1.4rem; color: var(--muted); line-height: 1; transition: color 0.2s;
+    }
+    .blog-post-close:hover { color: var(--ink); }
+    .blog-post-cat {
+      font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 1rem;
+    }
+    .blog-post-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem; font-weight: 400; line-height: 1.25;
+      color: var(--ink); margin-bottom: 0.75rem;
+    }
+    .blog-post-meta {
+      font-size: 0.72rem; color: var(--muted); letter-spacing: 0.08em;
+      margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--warm);
+    }
+    .blog-post-body { font-size: 0.95rem; line-height: 1.9; color: #3a3530; }
+    .blog-post-body p { margin-bottom: 1.2rem; }
+    .blog-post-actions { list-style: none; margin: 1.5rem 0; display: flex; flex-direction: column; gap: 0.85rem; }
+    .blog-post-actions li {
+      display: flex; gap: 0.75rem; align-items: flex-start;
+      font-size: 0.92rem; line-height: 1.7; color: #3a3530;
+      background: var(--cream); padding: 1rem 1.2rem; border-left: 3px solid var(--gold);
+    }
+    .blog-post-tip {
+      background: var(--ink); color: var(--white);
+      padding: 1.25rem 1.5rem; margin: 1.5rem 0;
+      font-size: 0.9rem; line-height: 1.75; border-left: 3px solid var(--gold);
+    }
+    .blog-post-question {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem; font-style: italic; color: var(--ink);
+      margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--warm);
+    }
+
+    /* ── CONTACT ── */
+    #contact { background: var(--cream); text-align: center; }
+    #contact .section-title { margin: 0 auto 1rem; max-width: 600px; }
+    .contact-sub { font-size: 1rem; color: var(--muted); margin-bottom: 3rem; }
+    .contact-cards { display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; }
+    .contact-card {
+      background: var(--white); padding: 2rem 2.5rem; min-width: 200px;
+      border: 1px solid var(--warm); transition: border-color 0.2s;
+    }
+    .contact-card:hover { border-color: var(--gold); }
+    .contact-card-label {
+      font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 0.5rem;
+    }
+    .contact-card-value { font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; color: var(--ink); }
 
     /* ── FOOTER ── */
     footer {
-      background: var(--ink);
-      padding: 2rem 6rem;
+      background: var(--ink); padding: 2rem 6rem;
       display: flex; align-items: center; justify-content: space-between;
     }
-    .footer-brand {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1rem; color: rgba(253,250,245,0.4);
-    }
+    .footer-brand { font-family: 'Cormorant Garamond', serif; font-size: 1rem; color: rgba(253,250,245,0.4); }
     .footer-brand span { color: var(--gold); }
-    .footer-copy {
-      font-size: 0.72rem; color: rgba(253,250,245,0.3);
-    }
+    .footer-copy { font-size: 0.72rem; color: rgba(253,250,245,0.3); }
 
     /* ── ANIMATIONS ── */
-    .fade-up {
-      opacity: 0; transform: translateY(28px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
-    }
+    .fade-up { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
     .fade-up.visible { opacity: 1; transform: none; }
 
     /* ── RESPONSIVE ── */
@@ -490,50 +447,68 @@
       .services-intro { grid-template-columns: 1fr; gap: 1.5rem; }
       .services-grid { grid-template-columns: 1fr 1fr; }
       .exp-grid { grid-template-columns: 1fr; }
+      .blog-grid { grid-template-columns: 1fr 1fr; }
+      .blog-featured { grid-column: span 2; grid-template-columns: 1fr; }
+      .blog-featured-right { min-height: 180px; }
+      .blog-post-modal { padding: 2rem; }
       footer { flex-direction: column; gap: 0.5rem; text-align: center; padding: 2rem; }
     }
     @media (max-width: 600px) {
       .services-grid { grid-template-columns: 1fr; }
       #stats { grid-template-columns: 1fr 1fr; }
+      .blog-grid { grid-template-columns: 1fr; }
+      .blog-featured { grid-column: span 1; }
     }
   </style>
 </head>
-<body>
+<body class="lang-en">
 
 <!-- NAV -->
 <nav>
   <a class="nav-brand" href="#hero">Emergent <span>HR</span> — Powered by Simona Fuchila</a>
-  <ul class="nav-links">
-    <li><a href="#about">About</a></li>
-    <li><a href="#services">Services</a></li>
-    <li><a href="#experience">Experience</a></li>
-    <li><a href="#blog">Blog</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ul>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li data-lang="en"><a href="#about">About</a></li>
+      <li data-lang="en"><a href="#services">Services</a></li>
+      <li data-lang="en"><a href="#experience">Experience</a></li>
+      <li data-lang="en"><a href="#blog">Blog</a></li>
+      <li data-lang="en"><a href="#contact">Contact</a></li>
+      <li data-lang="ro"><a href="#about">Despre</a></li>
+      <li data-lang="ro"><a href="#services">Servicii</a></li>
+      <li data-lang="ro"><a href="#experience">Experiență</a></li>
+      <li data-lang="ro"><a href="#blog">Blog</a></li>
+      <li data-lang="ro"><a href="#contact">Contact</a></li>
+    </ul>
+    <div class="lang-toggle">
+      <button class="lang-btn active" id="btn-en" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" id="btn-ro" onclick="setLang('ro')">RO</button>
+    </div>
+  </div>
 </nav>
 
 <!-- HERO -->
 <section id="hero">
   <div class="hero-left">
-    <div class="hero-eyebrow">Emergent HR</div>
+    <div class="hero-eyebrow" data-lang="en">Emergent HR</div>
+    <div class="hero-eyebrow" data-lang="ro">Emergent HR</div>
     <h1 class="hero-title">
-      Human Resources<br/>
-      that <em>transforms</em><br/>
-      organizations.
+      <span data-lang="en">Human Resources<br/>that <em>transforms</em><br/>organizations.</span>
+      <span data-lang="ro">Resurse Umane<br/>care <em>transformă</em><br/>organizațiile.</span>
     </h1>
-    <p class="hero-sub">
-      Strategic HR leadership with over 20 years of international experience — from start-up to enterprise, across Romania, the UK, and Europe.
-    </p>
+    <p class="hero-sub" data-lang="en">Strategic HR leadership with over 20 years of international experience — from start-up to enterprise, across Romania, the UK, and Europe.</p>
+    <p class="hero-sub" data-lang="ro">Leadership strategic în HR cu peste 20 de ani de experiență internațională — de la start-up la enterprise, în România, Marea Britanie și Europa.</p>
     <a href="#contact" class="btn-primary">
-      Work with Simona
+      <span data-lang="en">Work with Simona</span>
+      <span data-lang="ro">Lucrează cu Simona</span>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
     </a>
   </div>
   <div class="hero-right">
     <img src="simona.png" alt="Simona Fuchila" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;" />
-    <div class="hero-name-card" style="position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);width:calc(100% - 4rem);max-width:340px;">
+    <div class="hero-name-card">
       <div class="hero-name">Simona Fuchila</div>
-      <div class="hero-title-card">HR Director &amp; Executive Coach</div>
+      <div class="hero-title-card" data-lang="en">HR Director &amp; Executive Coach</div>
+      <div class="hero-title-card" data-lang="ro">Director HR &amp; Executive Coach</div>
     </div>
   </div>
 </section>
@@ -542,109 +517,97 @@
 <div id="stats">
   <div class="stat-item fade-up">
     <div class="stat-num">20+</div>
-    <div class="stat-label">Years of Experience</div>
+    <div class="stat-label" data-lang="en">Years of Experience</div>
+    <div class="stat-label" data-lang="ro">Ani de Experiență</div>
   </div>
   <div class="stat-item fade-up" style="transition-delay:0.1s">
     <div class="stat-num">3,500</div>
-    <div class="stat-label">Employees Scaled To</div>
+    <div class="stat-label" data-lang="en">Employees Scaled To</div>
+    <div class="stat-label" data-lang="ro">Angajați Scalați</div>
   </div>
   <div class="stat-item fade-up" style="transition-delay:0.2s">
     <div class="stat-num">150+</div>
-    <div class="stat-label">MBTI individual profiles &amp; Top Management Teams</div>
+    <div class="stat-label" data-lang="en">MBTI individual profiles &amp; Top Management Teams</div>
+    <div class="stat-label" data-lang="ro">Profile MBTI individuale &amp; Echipe de Top Management</div>
   </div>
   <div class="stat-item fade-up" style="transition-delay:0.3s">
     <div class="stat-num">1500</div>
-    <div class="stat-label">unique positions mapped for Pay Transparency</div>
+    <div class="stat-label" data-lang="en">unique positions mapped for Pay Transparency</div>
+    <div class="stat-label" data-lang="ro">poziții unice mapate pentru Transparența Salarială</div>
   </div>
-
 </div>
 
 <!-- ABOUT -->
 <section id="about">
   <div class="about-left fade-up">
-    <p class="section-tag">About Simona</p>
-    <h2 class="section-title">A career built on <em>people</em> &amp; purpose.</h2>
-    <p class="about-bio">
-      Simona Fuchila is a highly influential and transformative Human Resources Leader with over 25 years of experience. She has a remarkable track record of developing and executing HR strategies that drive organizational growth, profitability, and employee engagement — successfully guiding organizations from a single employee to 3,500.
-    </p>
-    <p class="about-bio">
-      Her expertise spans comprehensive change management, Lean and Six Sigma process optimization, talent development, and designing salary structures compliant with European equal pay directives. With experience across Romania, the UK, and Europe, Simona is an invaluable partner to any company aiming to elevate their HR capabilities.
-    </p>
-    <p class="about-bio">
-      On a personal level, Simona is driven by a deep belief that engaged, empowered people are the true engine of any organization. Throughout her career she has realized that lasting transformation begins not with processes — but with trust, values, and genuine human connection.
-    </p>
+    <p class="section-tag" data-lang="en">About Simona</p>
+    <p class="section-tag" data-lang="ro">Despre Simona</p>
+    <h2 class="section-title" data-lang="en">A career built on <em>people</em> &amp; purpose.</h2>
+    <h2 class="section-title" data-lang="ro">O carieră construită pe <em>oameni</em> și valori.</h2>
+    <p class="about-bio" data-lang="en">Simona Fuchila is a highly influential and transformative Human Resources Leader with over 25 years of experience. She has a remarkable track record of developing and executing HR strategies that drive organizational growth, profitability, and employee engagement — successfully guiding organizations from a single employee to 3,500.</p>
+    <p class="about-bio" data-lang="ro">Simona Fuchila este un lider transformațional în Resurse Umane, cu peste 25 de ani de experiență. Are un palmares remarcabil în dezvoltarea și implementarea strategiilor HR care stimulează creșterea organizațională, profitabilitatea și implicarea angajaților — ghidând cu succes organizații de la un singur angajat la 3.500.</p>
+    <p class="about-bio" data-lang="en">Her expertise spans comprehensive change management, Lean and Six Sigma process optimization, talent development, and designing salary structures compliant with European equal pay directives. With experience across Romania, the UK, and Europe, Simona is an invaluable partner to any company aiming to elevate their HR capabilities.</p>
+    <p class="about-bio" data-lang="ro">Expertiza sa acoperă managementul schimbării, optimizarea proceselor Lean și Six Sigma, dezvoltarea talentelor și proiectarea structurilor salariale conforme cu directivele europene privind egalitatea de remunerare. Cu experiență în România, Marea Britanie și Europa, Simona este un partener de neprețuit pentru orice companie care dorește să-și îmbunătățească capacitățile HR.</p>
+    <p class="about-bio" data-lang="en">On a personal level, Simona is driven by a deep belief that engaged, empowered people are the true engine of any organization. Throughout her career she has realized that lasting transformation begins not with processes — but with trust, values, and genuine human connection.</p>
+    <p class="about-bio" data-lang="ro">La nivel personal, Simona este animată de convingerea că oamenii implicați și responsabilizați sunt adevăratul motor al oricărei organizații. De-a lungul carierei sale a înțeles că transformarea durabilă nu începe cu procesele — ci cu încredere, valori și conexiune umană autentică.</p>
     <div class="personal-values">
-      <div class="values-title">"While working across cultures and industries, I realized that the most resilient organizations share one thing: people who feel seen."</div>
-      <div class="values-text">Simona brings this philosophy to every engagement — combining rigorous methodology with empathy, and strategy with heart.</div>
+      <div class="values-title" data-lang="en">"While working across cultures and industries, I realized that the most resilient organizations share one thing: people who feel seen."</div>
+      <div class="values-title" data-lang="ro">„Lucrând în culturi și industrii diferite, am realizat că organizațiile cele mai reziliente au un lucru în comun: oameni care se simt văzuți."</div>
+      <div class="values-text" data-lang="en">Simona brings this philosophy to every engagement — combining rigorous methodology with empathy, and strategy with heart.</div>
+      <div class="values-text" data-lang="ro">Simona aduce această filozofie în fiecare colaborare — combinând metodologia riguroasă cu empatia și strategia cu suflet.</div>
     </div>
   </div>
   <div class="about-right fade-up" style="transition-delay:0.15s">
-    <p class="section-tag">Credentials &amp; Education</p>
-    <h3 class="section-title" style="font-size:1.8rem">Certified. <em>Proven.</em></h3>
+    <p class="section-tag" data-lang="en">Credentials &amp; Education</p>
+    <p class="section-tag" data-lang="ro">Certificări &amp; Educație</p>
+    <h3 class="section-title" style="font-size:1.8rem" data-lang="en">Certified. <em>Proven.</em></h3>
+    <h3 class="section-title" style="font-size:1.8rem" data-lang="ro">Certificată. <em>Dovedită.</em></h3>
     <div class="credentials-grid">
       <div class="credential-item">
-        <div class="cred-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3.33 1.67 8.67 1.67 12 0v-5"/></svg>
-        </div>
-        <div>
-          <div class="cred-name">Executive MBA</div>
-          <div class="cred-sub">Hull University, UK</div>
-        </div>
+        <div class="cred-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3.33 1.67 8.67 1.67 12 0v-5"/></svg></div>
+        <div><div class="cred-name">Executive MBA</div><div class="cred-sub">Hull University, UK</div></div>
       </div>
       <div class="credential-item">
-        <div class="cred-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
-        </div>
-        <div>
-          <div class="cred-name">MBTI Step I &amp; II</div>
-          <div class="cred-sub">Certified Practitioner</div>
-        </div>
+        <div class="cred-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div>
+        <div><div class="cred-name">MBTI Step I &amp; II</div><div class="cred-sub" data-lang="en">Certified Practitioner</div><div class="cred-sub" data-lang="ro">Practician Certificat</div></div>
       </div>
       <div class="credential-item">
-        <div class="cred-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-        </div>
-        <div>
-          <div class="cred-name">DISC VALUES</div>
-          <div class="cred-sub">360° ESCi</div>
-        </div>
-      </div>
+        <div class="cred-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
+        <div><div class="cred-name">Korn Ferry Leadership Architect</div><div class="cred-sub">360° &amp; Emotional Intelligence (ESCI)</div></div>
       </div>
       <div class="credential-item">
-        <div class="cred-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-        </div>
+        <div class="cred-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/></svg></div>
         <div>
-          <div class="cred-name">Executive &amp; Career Coaching</div>
-          <div class="cred-sub">Certified Practitioner</div>
-        </div>
-      </div>
-      <div class="credential-item">
-        <div class="cred-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/></svg>
-        </div>
-        <div>
-          <div class="cred-name">Organizational Culture Diagnosis</div>
+          <div class="cred-name" data-lang="en">Organizational Culture Diagnosis</div>
+          <div class="cred-name" data-lang="ro">Diagnosticul Culturii Organizaționale</div>
           <div class="cred-sub">Hofstede Insights — The Culture Factor</div>
         </div>
-      </div>      
+      </div>
       <div class="credential-item">
-        <div class="cred-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-        </div>
+        <div class="cred-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
         <div>
-          <div class="cred-name">Behavioural Economics</div>
+          <div class="cred-name">DISC &amp; LEAN Manufacturing</div>
+          <div class="cred-sub" data-lang="en">Applied in HR Operations</div>
+          <div class="cred-sub" data-lang="ro">Aplicat în Operațiuni HR</div>
+        </div>
+      </div>
+      <div class="credential-item">
+        <div class="cred-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div>
+        <div>
+          <div class="cred-name" data-lang="en">Executive &amp; Career Coach</div>
+          <div class="cred-name" data-lang="ro">Coach Executiv &amp; de Carieră</div>
+          <div class="cred-sub" data-lang="en">Certified Practitioner</div>
+          <div class="cred-sub" data-lang="ro">Practician Certificat</div>
+        </div>
+      </div>
+      <div class="credential-item">
+        <div class="cred-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+        <div>
+          <div class="cred-name" data-lang="en">Behavioural Economics</div>
+          <div class="cred-name" data-lang="ro">Economie Comportamentală</div>
           <div class="cred-sub">Buckingham University</div>
         </div>
       </div>
-      <div class="credential-item">
-        <div class="cred-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-        </div>
-        <div>
-          <div class="cred-name">LEAN Manufacturing</div>
-          <div class="cred-sub">Applied in HR Operations</div>
-        </div>      
     </div>
   </div>
 </section>
@@ -653,75 +616,100 @@
 <section id="services">
   <div class="services-intro fade-up">
     <div>
-      <p class="section-tag">What I Do</p>
-      <h2 class="section-title">Strategic <em>interventions</em> that deliver business results through people.</h2>
+      <p class="section-tag" data-lang="en">What I Do</p>
+      <p class="section-tag" data-lang="ro">Ce Ofer</p>
+      <h2 class="section-title" data-lang="en">Strategic <em>interventions</em> that last.</h2>
+      <h2 class="section-title" data-lang="ro">Intervenții strategice <em>durabile.</em></h2>
     </div>
-    <div>
-      <p class="services-desc">Emergent HR offers a full spectrum of strategic HR services — tailored to each organization's unique needs, culture, and ambitions. Whether you're scaling rapidly or navigating complex transformation, Simona brings the expertise to guide you forward.</p>
-    </div>
+    <p class="services-desc" data-lang="en">Emergent HR offers a full spectrum of strategic HR services — tailored to each organization's unique needs, culture, and ambitions. Whether you're scaling rapidly or navigating complex transformation, Simona brings the expertise to guide you forward.</p>
+    <p class="services-desc" data-lang="ro">Emergent HR oferă un spectru complet de servicii strategice HR — adaptate nevoilor, culturii și ambițiilor fiecărei organizații. Indiferent dacă vă extindeți rapid sau navigați o transformare complexă, Simona aduce expertiza necesară să vă ghideze.</p>
   </div>
   <div class="services-grid">
     <div class="service-card fade-up">
       <div class="service-num">01</div>
-      <div class="service-name">Organizational Design &amp; Structure</div>
-      <p class="service-desc">Design and optimization of organizational structures, ensuring the right talent is aligned with the right roles for maximum impact.</p>
+      <div class="service-name" data-lang="en">Organizational Design &amp; Structure</div>
+      <div class="service-name" data-lang="ro">Design &amp; Structură Organizațională</div>
+      <p class="service-desc" data-lang="en">Design and optimization of organizational structures, ensuring the right talent is aligned with the right roles for maximum impact.</p>
+      <p class="service-desc" data-lang="ro">Proiectarea și optimizarea structurilor organizaționale, asigurând că talentul potrivit este aliniat cu rolurile potrivite pentru impact maxim.</p>
+    </div>
+    <div class="service-card fade-up" style="transition-delay:0.08s">
+      <div class="service-num">02</div>
+      <div class="service-name" data-lang="en">Change Management &amp; Culture</div>
+      <div class="service-name" data-lang="ro">Managementul Schimbării &amp; Cultură</div>
+      <p class="service-desc" data-lang="en">Facilitating organizational cohesion and driving maturity — creating an environment of collaboration, growth, and lasting cultural change.</p>
+      <p class="service-desc" data-lang="ro">Facilitarea coeziunii organizaționale și maturizarea echipelor — creând un mediu de colaborare, creștere și schimbare culturală durabilă.</p>
     </div>
     <div class="service-card fade-up" style="transition-delay:0.16s">
-      <div class="service-num">02</div>
-      <div class="service-name">Pay Transparency</div>
-      <p class="service-desc">Developing salary structures that comply with European equal pay directives, ensuring fairness and equity across genders and roles.</p>
-    </div>
-    <div class="service-card fade-up" style="transition-delay:0.4s">
       <div class="service-num">03</div>
-      <div class="service-name">Executive &amp; Career Coaching</div>
-      <p class="service-desc">Delivering one-on-one coaching to leaders and professionals — empowering them to reach their full potential and navigate pivotal transitions.</p>
-    </div>    
+      <div class="service-name" data-lang="en">Equal Pay &amp; Compensation</div>
+      <div class="service-name" data-lang="ro">Egalitate Salarială &amp; Compensații</div>
+      <p class="service-desc" data-lang="en">Developing salary structures that comply with European equal pay directives, ensuring fairness and equity across genders and roles.</p>
+      <p class="service-desc" data-lang="ro">Dezvoltarea structurilor salariale conforme cu directivele europene privind egalitatea de remunerare, asigurând echitate între genuri și roluri.</p>
+    </div>
     <div class="service-card fade-up" style="transition-delay:0.24s">
       <div class="service-num">04</div>
-      <div class="service-name">HR Strategy &amp; Process Optimization</div>
-      <p class="service-desc">Streamlining HR processes through Lean principles — enhancing efficiency, reducing waste, and building scalable operations.</p>
+      <div class="service-name" data-lang="en">HR Process Optimization</div>
+      <div class="service-name" data-lang="ro">Optimizarea Proceselor HR</div>
+      <p class="service-desc" data-lang="en">Streamlining HR processes through Lean principles — enhancing efficiency, reducing waste, and building scalable operations.</p>
+      <p class="service-desc" data-lang="ro">Eficientizarea proceselor HR prin principii Lean — creșterea eficienței, reducerea risipei și construirea unor operațiuni scalabile.</p>
     </div>
     <div class="service-card fade-up" style="transition-delay:0.32s">
       <div class="service-num">05</div>
-      <div class="service-name">Organizational culture diagnostic &amp; new plan</div>
-      <p class="service-desc">Crafting and executing HR strategies aligned with business goals — and providing expert consultancy tailored to your organization's unique needs.</p>
+      <div class="service-name" data-lang="en">HR Strategy &amp; Consultancy</div>
+      <div class="service-name" data-lang="ro">Strategie HR &amp; Consultanță</div>
+      <p class="service-desc" data-lang="en">Crafting and executing HR strategies aligned with business goals — and providing expert consultancy tailored to your organization's unique needs.</p>
+      <p class="service-desc" data-lang="ro">Elaborarea și implementarea strategiilor HR aliniate cu obiectivele de business — și consultanță expertă adaptată nevoilor unice ale organizației dvs.</p>
     </div>
-    <div class="service-card fade-up" style="transition-delay:0.08s">
+    <div class="service-card fade-up" style="transition-delay:0.4s">
       <div class="service-num">06</div>
-      <div class="service-name">Change Management through Behavior Transformation</div>
-      <p class="service-desc">Facilitating organizational cohesion and driving maturity — creating an environment of collaboration, growth, and lasting cultural change.</p>
-    </div>    
+      <div class="service-name" data-lang="en">Executive &amp; Career Coaching</div>
+      <div class="service-name" data-lang="ro">Coaching Executiv &amp; de Carieră</div>
+      <p class="service-desc" data-lang="en">Delivering one-on-one coaching to leaders and professionals — empowering them to reach their full potential and navigate pivotal transitions.</p>
+      <p class="service-desc" data-lang="ro">Sesiuni individuale de coaching pentru lideri și profesioniști — ajutându-i să-și atingă potențialul maxim și să navigheze tranziții importante.</p>
+    </div>
   </div>
 </section>
 
 <!-- EXPERIENCE -->
 <section id="experience">
-  <p class="section-tag">Career Highlights</p>
-  <h2 class="section-title">A proven track record <em>across industries.</em></h2>
+  <p class="section-tag" data-lang="en">Career Highlights</p>
+  <p class="section-tag" data-lang="ro">Repere de Carieră</p>
+  <h2 class="section-title" data-lang="en">A proven track record <em>across industries.</em></h2>
+  <h2 class="section-title" data-lang="ro">Un parcurs dovedit <em>în multiple industrii.</em></h2>
   <div class="exp-grid">
     <div class="exp-card fade-up">
       <div class="exp-company">Emerson</div>
-      <div class="exp-role">HR Director · 17 Years</div>
-      <p class="exp-desc">Led HR from the ground up, scaling the organization from 0 to 3,500 employees. Designed and implemented end-to-end HR strategies covering talent acquisition, performance management, culture, compensation, and organizational development across multiple European sites.</p>
-      <span class="exp-highlight">0 → 3,500 employees</span>
+      <div class="exp-role" data-lang="en">HR Director · 17 Years</div>
+      <div class="exp-role" data-lang="ro">Director HR · 17 Ani</div>
+      <p class="exp-desc" data-lang="en">Led HR from the ground up, scaling the organization from 0 to 3,500 employees. Designed and implemented end-to-end HR strategies covering talent acquisition, performance management, culture, compensation, and organizational development across multiple European sites.</p>
+      <p class="exp-desc" data-lang="ro">A condus HR-ul de la zero, scalând organizația de la 0 la 3.500 de angajați. A proiectat și implementat strategii HR end-to-end acoperind recrutarea, managementul performanței, cultura, compensațiile și dezvoltarea organizațională în mai multe locații europene.</p>
+      <span class="exp-highlight">0 → 3,500 <span data-lang="en">employees</span><span data-lang="ro">angajați</span></span>
     </div>
     <div class="exp-card fade-up" style="transition-delay:0.1s">
-      <div class="exp-company">Automotive Industry</div>
-      <div class="exp-role">Sumitomo &amp; Faurecia · 6 Years</div>
-      <p class="exp-desc">Held progressive roles as trainer, HR coordinator, and LEAN specialist in HR — applying Six Sigma and Lean methodologies to streamline workforce processes, reduce inefficiencies, and build high-performing teams within fast-paced manufacturing environments.</p>
+      <div class="exp-company" data-lang="en">Automotive Industry</div>
+      <div class="exp-company" data-lang="ro">Industria Auto</div>
+      <div class="exp-role">Sumitomo &amp; Faurecia · <span data-lang="en">6 Years</span><span data-lang="ro">6 Ani</span></div>
+      <p class="exp-desc" data-lang="en">Held progressive roles as trainer, HR coordinator, and LEAN specialist in HR — applying Six Sigma and Lean methodologies to streamline workforce processes, reduce inefficiencies, and build high-performing teams within fast-paced manufacturing environments.</p>
+      <p class="exp-desc" data-lang="ro">A ocupat roluri progresive ca trainer, coordonator HR și specialist LEAN în HR — aplicând metodologiile Six Sigma și Lean pentru a eficientiza procesele de resurse umane și a construi echipe performante în medii de producție dinamice.</p>
       <span class="exp-highlight">Lean · Six Sigma · HR Operations</span>
     </div>
     <div class="exp-card fade-up" style="transition-delay:0.2s">
-      <div class="exp-company">International Reach</div>
-      <div class="exp-role">Romania · UK · Europe</div>
-      <p class="exp-desc">Deep experience working across cultures — bridging Eastern European operational contexts with Western corporate frameworks. Brings a uniquely cross-cultural perspective to every engagement, navigating complexity with empathy and precision.</p>
-      <span class="exp-highlight">Cross-cultural HR leadership</span>
+      <div class="exp-company" data-lang="en">International Reach</div>
+      <div class="exp-company" data-lang="ro">Prezență Internațională</div>
+      <div class="exp-role">România · UK · <span data-lang="en">Europe</span><span data-lang="ro">Europa</span></div>
+      <p class="exp-desc" data-lang="en">Deep experience working across cultures — bridging Eastern European operational contexts with Western corporate frameworks. Brings a uniquely cross-cultural perspective to every engagement, navigating complexity with empathy and precision.</p>
+      <p class="exp-desc" data-lang="ro">Experiență profundă de lucru trans-cultural — conectând contextele operaționale est-europene cu cadrele corporative occidentale. Aduce o perspectivă interculturală unică fiecărei colaborări, navigând complexitatea cu empatie și precizie.</p>
+      <span class="exp-highlight" data-lang="en">Cross-cultural HR leadership</span>
+      <span class="exp-highlight" data-lang="ro">Leadership HR intercultural</span>
     </div>
     <div class="exp-card fade-up" style="transition-delay:0.3s">
       <div class="exp-company">Emergent HR</div>
-      <div class="exp-role">Independent Consultancy · Present</div>
-      <p class="exp-desc">Now working independently with organizations across sectors to deliver strategic HR transformation. Combining decades of corporate expertise with the agility and personalized attention of a boutique consultancy — powered by deep human understanding.</p>
-      <span class="exp-highlight">Available for new partnerships</span>
+      <div class="exp-role" data-lang="en">Independent Consultancy · Present</div>
+      <div class="exp-role" data-lang="ro">Consultanță Independentă · Prezent</div>
+      <p class="exp-desc" data-lang="en">Now working independently with organizations across sectors to deliver strategic HR transformation. Combining decades of corporate expertise with the agility and personalized attention of a boutique consultancy — powered by deep human understanding.</p>
+      <p class="exp-desc" data-lang="ro">Lucrează independent cu organizații din diverse sectoare pentru a livra transformare strategică HR. Combinând decenii de expertiză corporativă cu agilitatea și atenția personalizată a unei consultanțe boutique — alimentată de o profundă înțelegere umană.</p>
+      <span class="exp-highlight" data-lang="en">Available for new partnerships</span>
+      <span class="exp-highlight" data-lang="ro">Disponibilă pentru noi parteneriate</span>
     </div>
   </div>
 </section>
@@ -730,10 +718,13 @@
 <section id="blog">
   <div class="blog-header fade-up">
     <div>
-      <p class="section-tag">Insights &amp; Ideas</p>
-      <h2 class="section-title">From the <em>blog.</em></h2>
+      <p class="section-tag" data-lang="en">Insights &amp; Ideas</p>
+      <p class="section-tag" data-lang="ro">Perspective &amp; Idei</p>
+      <h2 class="section-title" data-lang="en">From the <em>blog.</em></h2>
+      <h2 class="section-title" data-lang="ro">De pe <em>blog.</em></h2>
     </div>
-    <p class="service-desc">Simona shares perspectives on HR transformation, leadership, and the evolving world of work.</p>
+    <p class="service-desc" style="max-width:320px" data-lang="en">Simona shares perspectives on HR transformation, leadership, and the evolving world of work.</p>
+    <p class="service-desc" style="max-width:320px" data-lang="ro">Simona împărtășește perspective despre transformarea HR, leadership și lumea muncii în continuă evoluție.</p>
   </div>
   <div class="blog-grid">
 
@@ -741,47 +732,63 @@
     <div class="blog-featured fade-up">
       <div class="blog-featured-left">
         <div>
-          <div class="blog-featured-tag">Leadership</div>
-          <div class="blog-featured-title">Why Organizational Culture Is the Most Underestimated Strategic Asset</div>
-          <p class="blog-featured-excerpt">Most organizations treat culture as a soft topic — something HR handles on the side. In my 25 years of experience, I've seen that the opposite is true: culture is the operating system everything else runs on. When it's misaligned, even the best strategy fails quietly.</p>
+          <div class="blog-featured-tag" data-lang="en">Leadership</div>
+          <div class="blog-featured-tag" data-lang="ro">Leadership</div>
+          <div class="blog-featured-title" data-lang="en">Why Organizational Culture Is the Most Underestimated Strategic Asset</div>
+          <div class="blog-featured-title" data-lang="ro">De ce Cultura Organizațională este Cel Mai Subestimat Activ Strategic</div>
+          <p class="blog-featured-excerpt" data-lang="en">Most organizations treat culture as a soft topic — something HR handles on the side. In my 25 years of experience, I've seen that the opposite is true: culture is the operating system everything else runs on. When it's misaligned, even the best strategy fails quietly.</p>
+          <p class="blog-featured-excerpt" data-lang="ro">Majoritatea organizațiilor tratează cultura ca pe un subiect soft — ceva de care se ocupă HR-ul în subsidiar. În cei 25 de ani de experiență, am văzut că opusul este adevărat: cultura este sistemul de operare pe care funcționează totul.</p>
         </div>
         <div style="display:flex;align-items:center;justify-content:space-between;">
-          <div class="blog-featured-meta">February 2025 · 6 min read</div>
-          <a href="#" class="blog-read" style="color:var(--gold-light);">Read more →</a>
+          <div class="blog-featured-meta" data-lang="en">February 2025 · 6 min read</div>
+          <div class="blog-featured-meta" data-lang="ro">Februarie 2025 · 6 min citire</div>
+          <a href="#" class="blog-read" style="color:var(--gold-light);" data-lang="en">Read more →</a>
+          <a href="#" class="blog-read" style="color:var(--gold-light);" data-lang="ro">Citește mai mult →</a>
         </div>
       </div>
       <div class="blog-featured-right">
         <div class="blog-featured-monogram">HR</div>
-        <div class="blog-featured-label">Featured Post</div>
+        <div class="blog-featured-label" data-lang="en">Featured Post</div>
+        <div class="blog-featured-label" data-lang="ro">Articol Principal</div>
       </div>
     </div>
 
     <!-- Post 1 -->
     <div class="blog-card fade-up" style="transition-delay:0.08s">
       <div class="blog-card-top">
-        <div class="blog-cat">Change Management</div>
-        <div class="blog-title">Navigating Organizational Change Without Losing Your Best People</div>
+        <div class="blog-cat" data-lang="en">Change Management</div>
+        <div class="blog-cat" data-lang="ro">Managementul Schimbării</div>
+        <div class="blog-title" data-lang="en">Navigating Organizational Change Without Losing Your Best People</div>
+        <div class="blog-title" data-lang="ro">Gestionarea Schimbării Organizaționale Fără a Pierde Oamenii Valoroși</div>
       </div>
       <div class="blog-card-body">
-        <p class="blog-excerpt">Change initiatives fail not because of poor planning, but because of poor communication. Here's a framework I've used across multinational organizations to keep talent engaged through uncertainty.</p>
+        <p class="blog-excerpt" data-lang="en">Change initiatives fail not because of poor planning, but because of poor communication. Here's a framework I've used across multinational organizations to keep talent engaged through uncertainty.</p>
+        <p class="blog-excerpt" data-lang="ro">Inițiativele de schimbare eșuează nu din cauza planificării deficitare, ci a comunicării slabe. Iată un cadru pe care l-am folosit în organizații multinaționale pentru a menține talentele implicate în perioadele de incertitudine.</p>
         <div class="blog-meta">
-          <span class="blog-date">January 2025</span>
-          <a href="#" class="blog-read">Read more →</a>
+          <span class="blog-date" data-lang="en">January 2025</span>
+          <span class="blog-date" data-lang="ro">Ianuarie 2025</span>
+          <a href="#" class="blog-read" data-lang="en">Read more →</a>
+          <a href="#" class="blog-read" data-lang="ro">Citește →</a>
         </div>
       </div>
     </div>
 
-    <!-- Post 2 -->
+    <!-- Post 2 — EU Pay Transparency -->
     <div class="blog-card fade-up" style="transition-delay:0.16s">
       <div class="blog-card-top">
-        <div class="blog-cat">Equal Pay</div>
-        <div class="blog-title">The EU Pay Transparency Directive: What Every HR Leader Needs to Know</div>
+        <div class="blog-cat" data-lang="en">Equal Pay</div>
+        <div class="blog-cat" data-lang="ro">Egalitate Salarială</div>
+        <div class="blog-title" data-lang="en">The EU Pay Transparency Directive: What Every HR Leader Needs to Know</div>
+        <div class="blog-title" data-lang="ro">Directiva UE privind Transparența Salarială: Ce Trebuie să Știe Fiecare Lider HR</div>
       </div>
       <div class="blog-card-body">
-        <p class="blog-excerpt">The EU's new directive is more than a compliance challenge — it's an opportunity to build genuinely equitable compensation structures. Here's how to prepare your organization before the deadline.</p>
+        <p class="blog-excerpt" data-lang="en">Many organizations still view the European Pay Transparency Directive as a compliance obligation. In reality, it is an opportunity to build more equitable, transparent, and credible reward systems.</p>
+        <p class="blog-excerpt" data-lang="ro">Multe organizații privesc încă Directiva Europeană privind Transparența Salarială ca pe o obligație de conformitate. În realitate, este o oportunitate de a construi sisteme de remunerare mai echitabile și credibile.</p>
         <div class="blog-meta">
-          <span class="blog-date">December 2024</span>
-          <a href="#" class="blog-read">Read more →</a>
+          <span class="blog-date" data-lang="en">December 2024</span>
+          <span class="blog-date" data-lang="ro">Decembrie 2024</span>
+          <a href="#" class="blog-read" onclick="openModal('post-pay-transparency');return false;" data-lang="en">Read more →</a>
+          <a href="#" class="blog-read" onclick="openModal('post-pay-transparency');return false;" data-lang="ro">Citește →</a>
         </div>
       </div>
     </div>
@@ -789,14 +796,19 @@
     <!-- Post 3 -->
     <div class="blog-card fade-up" style="transition-delay:0.24s">
       <div class="blog-card-top">
-        <div class="blog-cat">Lean HR</div>
-        <div class="blog-title">Applying Lean Principles to HR: Less Process, More Impact</div>
+        <div class="blog-cat" data-lang="en">Lean HR</div>
+        <div class="blog-cat" data-lang="ro">Lean HR</div>
+        <div class="blog-title" data-lang="en">Applying Lean Principles to HR: Less Process, More Impact</div>
+        <div class="blog-title" data-lang="ro">Aplicarea Principiilor Lean în HR: Mai Puțin Proces, Mai Mult Impact</div>
       </div>
       <div class="blog-card-body">
-        <p class="blog-excerpt">HR teams often build complexity over time — layers of approval, redundant forms, slow workflows. Lean thinking helped me cut through the noise and focus every process on the value it creates for people and the business.</p>
+        <p class="blog-excerpt" data-lang="en">HR teams often build complexity over time — layers of approval, redundant forms, slow workflows. Lean thinking helped me cut through the noise and focus every process on the value it creates.</p>
+        <p class="blog-excerpt" data-lang="ro">Echipele HR construiesc adesea complexitate în timp — niveluri de aprobare, formulare redundante, fluxuri lente. Gândirea Lean m-a ajutat să tai zgomotul și să focalizez fiecare proces pe valoarea pe care o creează.</p>
         <div class="blog-meta">
-          <span class="blog-date">November 2024</span>
-          <a href="#" class="blog-read">Read more →</a>
+          <span class="blog-date" data-lang="en">November 2024</span>
+          <span class="blog-date" data-lang="ro">Noiembrie 2024</span>
+          <a href="#" class="blog-read" data-lang="en">Read more →</a>
+          <a href="#" class="blog-read" data-lang="ro">Citește →</a>
         </div>
       </div>
     </div>
@@ -806,36 +818,96 @@
 
 <!-- CONTACT -->
 <section id="contact">
-  <p class="section-tag">Let's Talk</p>
-  <h2 class="section-title">Ready to <em>elevate</em> your HR?</h2>
-  <p class="contact-sub">Whether you're scaling your team, navigating change, or looking for a strategic HR partner — Simona is ready to help.</p>
+  <p class="section-tag" data-lang="en">Let's Talk</p>
+  <p class="section-tag" data-lang="ro">Să Vorbim</p>
+  <h2 class="section-title" data-lang="en">Ready to <em>elevate</em> your HR?</h2>
+  <h2 class="section-title" data-lang="ro">Pregătit să-ți <em>transformi</em> HR-ul?</h2>
+  <p class="contact-sub" data-lang="en">Whether you're scaling your team, navigating change, or looking for a strategic HR partner — Simona is ready to help.</p>
+  <p class="contact-sub" data-lang="ro">Indiferent dacă îți extinzi echipa, gestionezi schimbarea sau cauți un partener strategic HR — Simona este pregătită să te ajute.</p>
   <div class="contact-cards">
     <a class="contact-card fade-up" href="https://www.linkedin.com/in/simona-fuchila-hr/" target="_blank" rel="noopener noreferrer" style="text-decoration:none;">
-      <div class="contact-card-label">Connect on</div>
+      <div class="contact-card-label" data-lang="en">Connect on</div>
+      <div class="contact-card-label" data-lang="ro">Conectează-te pe</div>
       <div class="contact-card-value">LinkedIn</div>
     </a>
     <div class="contact-card fade-up" style="transition-delay:0.1s">
-      <div class="contact-card-label">Location</div>
-      <div class="contact-card-value">Romania &amp; Europe</div>
+      <div class="contact-card-label" data-lang="en">Location</div>
+      <div class="contact-card-label" data-lang="ro">Locație</div>
+      <div class="contact-card-value" data-lang="en">Romania &amp; Europe</div>
+      <div class="contact-card-value" data-lang="ro">România &amp; Europa</div>
     </div>
     <div class="contact-card fade-up" style="transition-delay:0.2s">
-      <div class="contact-card-label">Availability</div>
-      <div class="contact-card-value">Open to Projects</div>
+      <div class="contact-card-label" data-lang="en">Availability</div>
+      <div class="contact-card-label" data-lang="ro">Disponibilitate</div>
+      <div class="contact-card-value" data-lang="en">Open to Projects</div>
+      <div class="contact-card-value" data-lang="ro">Disponibilă pentru Proiecte</div>
     </div>
   </div>
   <div style="margin-top:3rem" class="fade-up">
-    <a href="mailto:simona@emergenthr.com" class="btn-primary">Get in Touch →</a>
+    <a href="mailto:simona@emergenthr.com" class="btn-primary">
+      <span data-lang="en">Get in Touch →</span>
+      <span data-lang="ro">Ia Legătura →</span>
+    </a>
   </div>
 </section>
 
 <!-- FOOTER -->
 <footer>
   <div class="footer-brand">Emergent <span>HR</span> · Powered by Simona Fuchila</div>
-  <div class="footer-copy">© 2025 Emergent HR. All rights reserved.</div>
+  <div class="footer-copy" data-lang="en">© 2025 Emergent HR. All rights reserved.</div>
+  <div class="footer-copy" data-lang="ro">© 2025 Emergent HR. Toate drepturile rezervate.</div>
 </footer>
 
+<!-- BLOG POST MODAL: EU Pay Transparency -->
+<div class="blog-overlay" id="post-pay-transparency" onclick="if(event.target===this)closeModal('post-pay-transparency')">
+  <div class="blog-post-modal">
+    <button class="blog-post-close" onclick="closeModal('post-pay-transparency')">&#x2715;</button>
+    <div class="blog-post-cat" data-lang="en">Equal Pay</div>
+    <div class="blog-post-cat" data-lang="ro">Egalitate Salarială</div>
+    <h2 class="blog-post-title" data-lang="en">The EU Pay Transparency Directive: What Every HR Leader Needs to Know</h2>
+    <h2 class="blog-post-title" data-lang="ro">Directiva UE privind Transparența Salarială: Ce Trebuie să Știe Fiecare Lider HR</h2>
+    <div class="blog-post-meta" data-lang="en">By Simona Fuchila &middot; December 2024</div>
+    <div class="blog-post-meta" data-lang="ro">De Simona Fuchila &middot; Decembrie 2024</div>
+    <div class="blog-post-body">
+      <p data-lang="en">Many organizations still view the European Pay Transparency Directive as a compliance obligation. In reality, it is an opportunity to build more equitable, transparent, and credible reward systems.</p>
+      <p data-lang="ro">Multe organizații privesc încă Directiva Europeană privind Transparența Salarială ca pe o obligație de conformitate. În realitate, este o oportunitate de a construi sisteme de remunerare mai echitabile, transparente și credibile.</p>
+      <p data-lang="en">Some essential actions that companies should complete right now:</p>
+      <p data-lang="ro">Câteva acțiuni esențiale pe care companiile ar trebui să le finalizeze chiar acum:</p>
+      <ul class="blog-post-actions">
+        <li data-lang="en"><span>&#x2705;</span><span>Review the salary structure to ensure that pay and promotion criteria are clear, documented, objective, and gender-neutral.</span></li>
+        <li data-lang="ro"><span>&#x2705;</span><span>Revizuiți structura salarială pentru a vă asigura că criteriile de remunerare și promovare sunt clare, documentate, obiective și neutre din punct de vedere al genului.</span></li>
+        <li data-lang="en"><span>&#x2705;</span><span>Implement a process that allows employees to request pay information, and enables the organization to respond promptly and in line with legal requirements.</span></li>
+        <li data-lang="ro"><span>&#x2705;</span><span>Implementați un proces care permite angajaților să solicite informații salariale și care dă posibilitatea organizației să răspundă prompt și în conformitate cu cerințele legale.</span></li>
+        <li data-lang="en"><span>&#x2705;</span><span>Conduct a &ldquo;gap assessment&rdquo; to identify differences between current practices and the directive&rsquo;s requirements.</span></li>
+        <li data-lang="ro"><span>&#x2705;</span><span>Realizați o &bdquo;analiză de gap&rdquo; pentru a identifica diferențele dintre practicile actuale și cerințele directivei.</span></li>
+        <li data-lang="en"><span>&#x2705;</span><span>Align recruitment, promotion, internal communication processes, and HR policies with the new transparency requirements.</span></li>
+        <li data-lang="ro"><span>&#x2705;</span><span>Aliniați procesele de recrutare, promovare, comunicare internă și politicile HR cu noile cerințe de transparență.</span></li>
+      </ul>
+      <div class="blog-post-tip" data-lang="en">&#x1F4A1; Organizations that start preparing now will have time to address potential non-compliance issues and turn pay transparency into a competitive advantage rather than a source of risk.</div>
+      <div class="blog-post-tip" data-lang="ro">&#x1F4A1; Organizațiile care încep să se pregătească acum vor avea timp să abordeze potențialele probleme de neconformitate și să transforme transparența salarială într-un avantaj competitiv, nu într-o sursă de risc.</div>
+      <div class="blog-post-question" data-lang="en">How well prepared is your organization to objectively explain and justify existing pay differences?</div>
+      <div class="blog-post-question" data-lang="ro">Cât de bine pregătită este organizația dvs. să explice și să justifice obiectiv diferențele salariale existente?</div>
+    </div>
+  </div>
+</div>
+
 <script>
-  // Intersection Observer for fade-up animations
+  // ── Language switcher ──
+  function setLang(lang) {
+    document.body.className = 'lang-' + lang;
+    document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+    document.getElementById('btn-ro').classList.toggle('active', lang === 'ro');
+    document.documentElement.lang = lang;
+    localStorage.setItem('hr-lang', lang);
+  }
+  const saved = localStorage.getItem('hr-lang');
+  if (saved) setLang(saved);
+
+  // ── Blog modal ──
+  function openModal(id) { document.getElementById(id).classList.add('open'); }
+  function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+  // ── Fade-up animations ──
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(e => {
       if (e.isIntersecting) {
@@ -844,7 +916,6 @@
       }
     });
   }, { threshold: 0.12 });
-
   document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
 </script>
 
